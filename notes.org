@@ -1,0 +1,93 @@
+#+title: Notes
+
+* Info
+- [[http://algonauts.csail.mit.edu/][official site]]
+- [[https://arxiv.org/abs/2301.03198][algonauts paper]]
+- [[https://www.sciencedirect.com/science/article/pii/S1053811910010657][Encoding and decoding in fMRI]]
+- [[https://www.frontiersin.org/articles/10.3389/fnsys.2017.00061/full][Encoding and Decoding models in cognitive electrophysiology]]
+- [[https://nilearn.github.io/stable/index.html][NIlearn]]
+- [[https://colab.research.google.com/drive/1bLJGP3bAo_hAOwZPHpiSHKlt97X9xsUw?usp=share_link][colab tutorial]]
+- [[https://docs.google.com/forms/u/0/d/e/1FAIpQLSehZkqZOUNk18uTjRTuLj7UYmRGz-OkdsU25AyO3Wm6iAb0VA/formResponse?pli=1][Form with dataset download]]
+- [[https://drive.google.com/drive/folders/17RyBAnvDhrrt18Js2VZqSVi_nZ7bn3G3][zipped data]]
+- [[https://drive.google.com/drive/folders/1DUf3nGNNFk6YjRjQtZPfAY5N105GoGJb][unzipped data]]
+- [[https://cvnlab.slite.page/p/X_7BBMgghj/ROIs][NSD manual]]
+- natural scenes dataset: fMRI of response from natural scenes
+- provide: scenes + fMRI response
+- build computational models to predict brain responses
+- responses for provided set of brain surface vertices
+- Challenge submission deadline: July 26th, 2023
+* Devkit tutorial note
+- quest to understand human intelligence and engineer AI are intertwined
+- neural visual responses to complex naturalistic scenes
+- NSD: 7T fMRI responses
+- images: COCO dataset
+- encoding models that accurately predict fMRI responses to visual input
+- linearizing encoding models: pretrained AlexNet architecture
+- training on colab takes 1h
+-
+** Load and visualize challenge data
+- each subject: 10000 images, 1000 shared
+- each image 3 times
+- task: presented or not
+- visual angle?
+- last 3 sessions of every subject is withheld for testing
+*** Data
+- brain surface fMRI (surface?) normalized to template
+- every point on brain surface ahs activity values in vertices
+- challenge data uses vertices on visual cortex (challenge space)
+- Train split: 8 subject, ~9000 each, normalized, averaged across repeats
+- Test split: 8 subject, ~200 each different images, withhold fMRI response
+- goal: test on test split!
+*** ROI indices
+- roi: multiple areas having different functional properties
+- ROI indices for selecting vertices
+- can use at own discretion, but evaluation does not use ROIs
+*** Train image
+- naming: ~train-0001_nsd-00013.png~
+- ~train-0001~: orders the images, match stimulus images dimension in fMRI training split, start from 1
+- ~nsd-00013~: NSD image IDs: map back to ~.hdf5~ NSD image file, COCO dataset, start from 0, can directly index in python
+- cropped versions of the original COCO images
+- cropping code provided
+
+** Train and evaluate linearizing encoding models
+- linearizing encoding models: using pretrained AlexNet architecture
+*** Splitting the data into training, validation, test partitions
+- in practice, only split training data into training + validation
+- split, downsample image features, linearly map to fMRI responses, evaluate prediction accuracy using validation
+- use x-fold cv to determine best hyperparameters
+- split: randomize indices
+*** Feature extraction and reduction (downsample)
+- downsample: 100 PCA components (speed up computations)
+- model downloaded from torch hub
+- ~create_feature_extractor~ for extracting features of a layer
+- for lack of RAM, ~IncrementalPCA~
+- first fit PCA model, then reduce dimensionality of the 3 dataset features
+*** Linear mapping
+- for each vertex, train one linear regression
+- just one line: ~LinearRegression().fit(features_train, lh_fmri_train)~
+*** Evaluation and visualization
+- Pearson's correlation
+- plot mean pearson's r to ROIs
+** Prepare for submission
+-
+
+* Paper Note
+** Encoding and decoding in fMRI
+-
+** Dino V2
+- Learning robust visual features without supervision
+- Apr 2023
+*** Abstract
+- LLM on large training scales
+- foundation models in CV
+- simplify use of images
+
+
+* Idea
+- feed the linearizer with fMRI data to get "features", which translates to parameters
+- /a prior/ model:
+
+* Questions
+- dimensions throughout
+- where is the cross validation step
+-

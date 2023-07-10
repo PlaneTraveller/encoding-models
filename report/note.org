@@ -1,0 +1,55 @@
+#+title: Note
+
+* Info
+7 月 7 日开始提交课程考核材料至生命学院 L 楼 A414，截止日期为 7 月 12 日 5:00 PM。
+
+1 上海科技大学高级生物学实验开题报告一份。请规范书写，并请指导教师修改。在确定报告为最终版后在报告最后页请指导教师完成综合评价并签名。如果指导教师不在国内，请其完成电子签。
+
+2 高级生物学实验指导教师评定意见表一份。请指导教师根据学生在组进行研究情况完成表格填写并签名，该表格可由学生自行提交，也可由指导小组内成员等其他老师提交至 L 楼 A414。
+
+3 科研记录一份。学生提交一份高级生物学实验期间的科研记录，符合组内指导教师要求，电子版纸质版均可。提供电子版科研记录的同学须请指导教师在科研记录处签字。科研记录涉及的内容至少包括课程期间的实验研究，但不仅限于该期间，但量分主要参考课程期间的研究情况进行，注意规范，内容过少会影响成绩。研究内容为数据分析等干实验的同学请一定请指导教师完成签名。科研记录内容完全保密，在提交后两个工作日内返还。
+- 实验记录？
+- 中英文？
+- 字数？
+
+* Required Outline
+** 目的意义，国内外研究概况及进展
+** 研究内容和实验方法
+** 实验技术路线图及技术关键
+** 预期实验进度安排
+** 实验室已有工作基础及实验条件
+** 预期实验结果
+** 理论，实际应用意义及课题的创新性
+* My outline
+** Introduction
+*** Hook
+*** Encoding models
+*** Algonaut
+*** NSD
+*** DINO V2
+** Methods and Experiments
+** Results
+** Conclusion and Discussion
+
+* Notes
+** DINO
+*** Foundation models
+- foundation models in CV
+- foundation models: models that are huge, and are general in the field, can be adapted to a wide range of downstream tasks
+- visual foundation models (VFMs): LLMs, Segment Anything, GATO for RL agents
+*** Self-supervised learning
+- self-supervision vs. unsupervised: self.. use data to generate labels, unsupervised.. learn patterns or structure within data
+*** Distillation
+- distillation
+- student-teacher distillation
+** Encoding models
+**
+** Transformers and Attention
+- QKV, multihead attention: takes QKV, produce attended output
+- at each step, input the input and generated output together to generate the next word
+- major difference: no recurrence, bp at each step, so no long bp
+- basically no "memory", just attention extraction at each step
+- attention: simplifies the task "at hand", just like how humans do
+#+begin_quote
+"The acts of the mind, wherein it exerts its power over simple ideas, are chiefly these three: 1. Combining several simple ideas into one compound one, and thus all complex ideas are made. 2. The second is bringing two ideas, whether simple or complex, together, and setting them by one another so as to take a view of them at once, without uniting them into one, by which it gets all its ideas of relations. 3. The third is separating them from all other ideas that accompany them in their real existence: this is called abstraction, and thus all its general ideas are made." -- John Locke, An Essay Concerning Human Understanding
+#+end_quote
