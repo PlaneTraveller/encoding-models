@@ -73,7 +73,14 @@
 
 * Paper Note
 ** Encoding and decoding in fMRI
--
+- 2010
+*** Abstract
+- decoding models: decode information about experimental stimuli or tasks
+- encoding models: voxel-based encoding model
+- decoding: predict stimulus from activity, encoding: predict activity from stimulus
+- advantages: functional description, more diffecult to get encoding model from decoding models
+- systematic modeling: estimating an encoding model for voxels, ends by using encoding models to perform decoding
+
 ** Dino V2
 - Learning robust visual features without supervision
 - Apr 2023
@@ -82,8 +89,34 @@
 - foundation models in CV
 - simplify use of images
 
+** Visio-Linguistic brain encoding
+*** Abstract
+- explores image and multi-modal transformers' efficacy for brain encoding
+- datasets: BOLD5000, Pereira
+- visualBERT significantly outperforms other models
+- regions that have dual functionalities for language and vision have higher correlation with multimodal models
+- question: visual regions are affected by linguistic processing?
+*** Introduction
+- several encoding models: ventral stream, higher cognition (language processing),
+- how the brain understands visual information through language is not known
+- intermediate layers in CNNs can account for intermediate layers of visual system
+- better performing CNNs \ne more brain-like
+- shallow recurrent anatomical network (CORnet): SOTA on brain-score
+**** More regions
+- previous success: V4 and IT
+- last layer activations from VBert is the best?
+**** Multimodal
+- multimodal data provide better proxy for human-like intelligence
+- late-fusion
+- cannot effectively exploit semantic correspondence across the two modes
+**** Transformers
+- more effective than CNN
+- ViT, DEiT, BEiT
+- multimodal transformers: visualBERT, LXMERT, CLIP: good on visio-linguistic tasks like visual question answering
+- image-based and multi-modal transformers can accurately perform fMRI encoding on the whole brain
+-
 
-* Idea
+* Ideas
 - feed the linearizer with fMRI data to get "features", which translates to parameters
 - /a prior/ model:
 

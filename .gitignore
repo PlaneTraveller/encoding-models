@@ -1,2 +1,4 @@
 /data/
 /materials/
+/logs/
+/code/__pycache__/
