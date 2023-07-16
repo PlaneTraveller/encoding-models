@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
+# ===============================================================================
+# = Imports
+
+
 import os
 import numpy as np
 from pathlib import Path
 from PIL import Image
 from tqdm import tqdm
 
-# <why>
 import matplotlib
 from matplotlib import pyplot as plt
 
@@ -15,7 +18,6 @@ from nilearn import datasets, plotting
 import torch
 from torch.utils.data import Dataset, DataLoader
 
-# <why>
 from torchvision.models.feature_extraction import (
     create_feature_extractor,
     get_graph_node_names,
@@ -27,7 +29,7 @@ from sklearn.linear_model import LinearRegression
 
 from scipy.stats import pearsonr as corr
 
-# Custom scripts
+# == Custom scripts and model
 from logger import logger
 
 
@@ -399,7 +401,6 @@ def main():
     # == Preparing model
     torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
     model = torch.hub.load("pytorch/vision:v0.10.0", "alexnet")
-    # torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
     # model = torch.hub.load("facebookresearch/dinov2", "dinov2_vits14")
     model.to(device)
     model.eval()
@@ -433,16 +434,16 @@ def main():
 
     # <why> permutation?
     # == Linear regression mapping
-    lh_reg = LinearRegression().fit(train_ft, subject.lh_fmri)
-    rh_reg = LinearRegression().fit(train_ft, subject.rh_fmri)
+    lh_reg = LinearRegression().fit(train_ft, data["lh_train"])
+    rh_reg = LinearRegression().fit(train_ft, data["rh_train"])
 
     lh_val_pred = lh_reg.predict(val_ft)
-    rh_val_pred = rh_reg.predict(val_ft)
+    # rh_val_pred = rh_reg.predict(val_ft)
 
     # == Calculating correlation
-    lh_corr = np.zeros(len(lh_val_pred))
-    for v in tqdm(range(len(lh_val_pred))):
-        lh_corr[v] = corr(lh_val_pred[:, v], data["lh_val"][:, v])
+    lh_corr = np.zeros(lh_val_pred.shape[1])
+    for v in tqdm(range(lh_val_pred.shape[1])):
+        lh_corr[v] = corr(lh_val_pred[:, v], data["lh_val"][:, v])[0]
 
     # == Visualizing encoding accuracy
     hemisphere = "left"
@@ -451,19 +452,19 @@ def main():
     )
     fsaverage_corr = np.zeros(len(fsaverage_all_vertices))
     # <why>
-    fsaverage_correlation[np.where(fsaverage_all_vertices)[0]] = lh_correlation
+    fsaverage_corr[np.where(fsaverage_all_vertices)[0]] = lh_corr
 
     fsaverage = datasets.fetch_surf_fsaverage("fsaverage")
     view = plotting.view_surf(
         surf_mesh=fsaverage["infl_" + hemisphere],
-        surf_map=fsaverage_correlation,
+        surf_map=fsaverage_corr,
         bg_map=fsaverage["sulc_" + hemisphere],
         threshold=1e-14,
         cmap="cold_hot",
         colorbar=True,
         title="Encoding accuracy, " + hemisphere + " hemisphere",
     )
-    view.show_in_browser()
+    view.open_in_browser()
 
 
 # ===============================================================================

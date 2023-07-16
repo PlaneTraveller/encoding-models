@@ -1,3 +1,4 @@
 #+title: Readme
 
-* This is temporary
+* Encoding models
+This project explores modern encoding models in predicting representations from neural recordings.
