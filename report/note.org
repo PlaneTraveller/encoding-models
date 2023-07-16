@@ -27,6 +27,7 @@
 - dino v2, similarity with the brain
 - hybrid models/insights from the biological brain, modalities, connections with language
 *** Hook
+-
 *** Encoding models
 *** NSD
 *** Algonaut

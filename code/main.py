@@ -23,7 +23,7 @@ from torchvision.models.feature_extraction import (
 from torchvision import transforms
 
 from sklearn.decomposition import IncrementalPCA
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
 
 from scipy.stats import pearsonr as corr
 
@@ -430,6 +430,40 @@ def main():
     print("\nTest images features:")
     print(test_ft.shape)
     print("(Test stimulus images × PCA features)")
+
+    # <why> permutation?
+    # == Linear regression mapping
+    lh_reg = LinearRegression().fit(train_ft, subject.lh_fmri)
+    rh_reg = LinearRegression().fit(train_ft, subject.rh_fmri)
+
+    lh_val_pred = lh_reg.predict(val_ft)
+    rh_val_pred = rh_reg.predict(val_ft)
+
+    # == Calculating correlation
+    lh_corr = np.zeros(len(lh_val_pred))
+    for v in tqdm(range(len(lh_val_pred))):
+        lh_corr[v] = corr(lh_val_pred[:, v], data["lh_val"][:, v])
+
+    # == Visualizing encoding accuracy
+    hemisphere = "left"
+    fsaverage_all_vertices = np.load(
+        subject.get_roi_dir(hemisphere, "all-vertices", False)
+    )
+    fsaverage_corr = np.zeros(len(fsaverage_all_vertices))
+    # <why>
+    fsaverage_correlation[np.where(fsaverage_all_vertices)[0]] = lh_correlation
+
+    fsaverage = datasets.fetch_surf_fsaverage("fsaverage")
+    view = plotting.view_surf(
+        surf_mesh=fsaverage["infl_" + hemisphere],
+        surf_map=fsaverage_correlation,
+        bg_map=fsaverage["sulc_" + hemisphere],
+        threshold=1e-14,
+        cmap="cold_hot",
+        colorbar=True,
+        title="Encoding accuracy, " + hemisphere + " hemisphere",
+    )
+    view.show_in_browser()
 
 
 # ===============================================================================

@@ -1,0 +1,31 @@
+#+title: Paper
+
+* My outline
+** Introduction
+- encoding models and their value, modalities, visual
+- lack of data, importance of data
+- NSD, size, specificities, quality
+- what algonaut is, significant work
+- sota models in CV, idea of foundation models
+- dino v2, similarity with the brain
+- hybrid models/insights from the biological brain, modalities, connections with language
+*** Hook
+- ccn
+- encoding models
+- data surge in electrophysiology
+- foundation model in vision
+- algonaut
+*** Encoding models
+*** NSD
+*** DINO V2
+*** Algonaut
+** Methods and Experiments
+** Results
+** Conclusion and Discussion
+
+* Introduction
+In order to learn about the biological implementations of cognition in the human brain, we must first understand the computational principles that underlie the brain's ability to process information.
+...
+
+** Encoding models
+Encoding models are a class of computational model that aim to predict neural representations from sensory stimuli.
